@@ -1,4 +1,4 @@
-Metaseq
+Metaseq (very dirty adaptation to work in python 3 and get peak signal heatmaps)
 =======
 .. image:: https://travis-ci.org/daler/metaseq.png?branch=master
     :target: https://travis-ci.org/daler/metaseq
