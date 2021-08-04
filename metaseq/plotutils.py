@@ -9,7 +9,7 @@ import numpy as np
 from matplotlib.ticker import MaxNLocator
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib import gridspec
-import colormap_adjust
+import metaseq.colormap_adjust
 from scipy import stats
 
 
@@ -155,7 +155,7 @@ def imshow(arr, x=None, ax=None, vmin=None, vmax=None, percentile=True,
         if vmax is None:
             vmax = arr.max()
 
-    cmap = colormap_adjust.smart_colormap(vmin, vmax)
+    cmap = metaseq.colormap_adjust.smart_colormap(vmin, vmax)
     _imshow_kwargs = dict(origin='lower', cmap=cmap, vmin=vmin, vmax=vmax,
                           aspect='auto')
     if imshow_kwargs is not None:

@@ -92,7 +92,7 @@ plot_filename = (args.plot_prefix + '-%s_features-%s_bp_chunksize=%s.pdf'
                  % (args.nfeatures, size, args.chunksize))
 processes = range(1, multiprocessing.cpu_count() + 1)
 max_proc = processes[-1]
-print """
+print("""
 {usage}
 Parameters
 ----------
@@ -107,19 +107,19 @@ in parallel and binned into {args.bins} bins, using from 1 to {max_proc} CPUs.
 Each CPU will get as many as {args.chunksize} features at a time.
 
 Plot will be saved as {plot_filename}.
-""".format(**locals())
+""".format(**locals()))
 
 
 
 d = {}
 results = {}
 for x in signals:
-    print '\n' + x.kind, '[%s]' % x.fn
+    print('\n' + x.kind, '[%s]' % x.fn)
     sys.stdout.flush()
     times = []
-    print 'CPUs:',
+    print('CPUs:',)
     for p in processes:
-        print p,
+        print(p,)
         sys.stdout.flush()
         if p == 1:
             p = None

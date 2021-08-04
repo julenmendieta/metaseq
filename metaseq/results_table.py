@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib.patches as patches
 import matplotlib
-import plotutils
+import metaseq.plotutils
 from matplotlib.transforms import blended_transform_factory
 from matplotlib.collections import EventCollection
 import gffutils
@@ -41,7 +41,7 @@ class ResultsTable(object):
         Wrapper around a pandas.DataFrame that adds additional functionality.
         """)
     def __init__(self, data, db=None, import_kwargs=None):
-        if isinstance(data, basestring):
+        if isinstance(data, str):
             import_kwargs = import_kwargs or {}
             data = pandas.read_table(data, **import_kwargs)
         if not isinstance(data, pandas.DataFrame):
@@ -58,7 +58,7 @@ class ResultsTable(object):
         return getattr(self.data, attr)
 
     def __getitem__(self, attr):
-        if isinstance(attr, basestring):
+        if isinstance(attr, str):
             return self.data.__getitem__(attr)
         else:
             return self.__class__(self.data.__getitem__(attr), **self._kwargs)
@@ -97,7 +97,7 @@ class ResultsTable(object):
         db : gffutils.FeatureDB
         """
         if db is not None:
-            if isinstance(db, basestring):
+            if isinstance(db, str):
                 db = gffutils.FeatureDB(db)
             if not isinstance(db, gffutils.FeatureDB):
                 raise ValueError(
@@ -396,7 +396,7 @@ class ResultsTable(object):
             allind[ind] = False
 
         # Copy over the color and alpha if they're not specified
-        general_hist_kwargs = plotutils._updatecopy(
+        general_hist_kwargs = metaseq.plotutils._updatecopy(
             orig=general_hist_kwargs, update_with=general_kwargs,
             keys=['color', 'alpha'])
 
@@ -408,7 +408,7 @@ class ResultsTable(object):
         )
 
         # Set up the object that will handle the marginal histograms
-        self.marginal = plotutils.MarginalHistScatter(
+        self.marginal = metaseq.plotutils.MarginalHistScatter(
             ax, hist_size=hist_size, pad=hist_pad)
 
         # Set up kwargs for x and y rug plots
@@ -453,12 +453,12 @@ class ResultsTable(object):
                 kwargs.pop('marginal_histograms', False) or
                 marginal_histograms)
 
-            updated_kwargs = plotutils._updatecopy(
+            updated_kwargs = metaseq.plotutils._updatecopy(
                 orig=kwargs, update_with=general_kwargs)
 
-            updated_hist_kwargs = plotutils._updatecopy(
+            updated_hist_kwargs = metaseq.plotutils._updatecopy(
                 orig=hist_kwargs, update_with=general_hist_kwargs)
-            updated_hist_kwargs = plotutils._updatecopy(
+            updated_hist_kwargs = metaseq.plotutils._updatecopy(
                 orig=updated_hist_kwargs, update_with=kwargs,
                 keys=['color', 'alpha'], override=True)
 
@@ -666,7 +666,7 @@ class ResultsTable(object):
             yield _id
 
     def _default_callback(self, i):
-        print self.data.ix[i]
+        print( self.data.ix[i])
 
     def strip_unknown_features(self):
         """
@@ -774,7 +774,7 @@ class DifferentialExpressionResults(ResultsTable):
 
     def __init__(self, data, db=None, header_check=True, **kwargs):
         import_kwargs = kwargs.pop('import_kwargs', {})
-        if header_check and isinstance(data, basestring):
+        if header_check and isinstance(data, str):
             comment_char = import_kwargs.get('comment', '#')
             for i, line in enumerate(open(data)):
                 if line[0] != comment_char:

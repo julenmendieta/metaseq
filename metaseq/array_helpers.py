@@ -4,10 +4,10 @@ import multiprocessing
 import itertools
 import pysam
 import sys
-from helpers import chunker
-import helpers
-from helpers import rebin
-import filetype_adapters
+import metaseq.helpers as helpers
+from metaseq.helpers import chunker
+from metaseq.helpers import rebin
+import metaseq.filetype_adapters
 
 
 class ArgumentError(Exception):
@@ -25,8 +25,8 @@ def _local_count(reader, feature, stranded=False):
     :param stranded: If `stranded=True`, then only counts signal on the same
         strand as `feature`.
     """
-    if isinstance(feature, basestring):
-        feature = helpers.tointerval(feature)
+    if isinstance(feature, str):
+        feature = metaseq.helpers.tointerval(feature)
     if stranded:
         strand = feature.strand
     else:
@@ -214,7 +214,7 @@ def _local_coverage(reader, features, read_strand=None, fragment_size=None,
     """
     # bigWig files are handled differently, so we need to know if we're working
     # with one; raise exeception if a kwarg was supplied that's not supported.
-    if isinstance(reader, filetype_adapters.BigWigAdapter):
+    if isinstance(reader, metaseq.filetype_adapters.BigWigAdapter):
         is_bigwig = True
         defaults = (
             ('read_strand', read_strand, None),
@@ -240,14 +240,14 @@ def _local_coverage(reader, features, read_strand=None, fragment_size=None,
     else:
         is_bigwig = False
 
-    if isinstance(reader, filetype_adapters.BamAdapter):
+    if isinstance(reader, metaseq.filetype_adapters.BamAdapter):
         if use_score:
             raise ArgumentError("Argument 'use_score' not supported for "
                                 "bam")
 
     # e.g., features = "chr1:1-1000"
-    if isinstance(features, basestring):
-        features = helpers.tointerval(features)
+    if isinstance(features, str):
+        features = metaseq.helpers.tointerval(features)
 
     if not ((isinstance(features, list) or isinstance(features, tuple))):
         if bins is not None:
@@ -270,7 +270,7 @@ def _local_coverage(reader, features, read_strand=None, fragment_size=None,
     profiles = []
     xs = []
     for window, nbin in zip(features, bins):
-        window = helpers.tointerval(window)
+        window = metaseq.helpers.tointerval(window)
         chrom = window.chrom
         start = window.start
         stop = window.stop

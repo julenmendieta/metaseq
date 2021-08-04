@@ -5,7 +5,7 @@ import os
 import pandas
 import pybedtools
 import numpy as np
-import _genomic_signal
+import metaseq._genomic_signal
 
 
 class Binner(object):
@@ -108,7 +108,7 @@ class Binner(object):
             same directory as the bigwig file.
 
         """
-        if isinstance(bigwig, _genomic_signal.BigWigSignal):
+        if isinstance(bigwig, metaseq._genomic_signal.BigWigSignal):
             bigwig = bigwig.fn
 
         if outdir is None:

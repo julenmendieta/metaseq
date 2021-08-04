@@ -33,11 +33,11 @@ from bx.bbi.bigwig_file import BigWigFile
 
 import pybedtools
 
-from array_helpers import _array, _array_parallel, _local_coverage, \
+from metaseq.array_helpers import _array, _array_parallel, _local_coverage, \
     _local_count, _count_array, _count_array_parallel
-import filetype_adapters
-import helpers
-from helpers import rebin
+import metaseq.filetype_adapters
+import metaseq.helpers
+from metaseq.helpers import rebin
 
 
 def supported_formats():
@@ -144,9 +144,9 @@ class BaseSignal(object):
 
         # since if we got here processes is not None, then this will trigger
         # a parallel array creation
-        features = helpers.tointerval(features)
+        features = metaseq.filetype_adapters.tointerval(features)
         x = np.arange(features.start, features.stop)
-        features = list(helpers.split_feature(features, processes))
+        features = list(metaseq.filetype_adapters.split_feature(features, processes))
         ys = self.array(
             features, *args, bins=None, processes=processes, ragged=True,
             **kwargs)
@@ -167,7 +167,7 @@ class BigWigSignal(BaseSignal):
         Class for operating on bigWig files
         """
         super(BigWigSignal, self).__init__(fn)
-        self.adapter = filetype_adapters.BigWigAdapter(fn)
+        self.adapter = metaseq.filetype_adapters.BigWigAdapter(fn)
 
 
 class IntervalSignal(BaseSignal):
@@ -199,7 +199,7 @@ class BamSignal(IntervalSignal):
         """
         BaseSignal.__init__(self, fn)
         self._readcount = None
-        self.adapter = filetype_adapters.BamAdapter(self.fn)
+        self.adapter = metaseq.filetype_adapters.BamAdapter(self.fn)
 
     def genome(self):
         """
@@ -271,7 +271,7 @@ class BigBedSignal(IntervalSignal):
         Class for operating on bigBed files.
         """
         IntervalSignal.__init__(self, fn)
-        self.adapter = filetype_adapters.BigBedAdapter(fn)
+        self.adapter = metaseq.filetype_adapters.BigBedAdapter(fn)
 
 
 class BedSignal(IntervalSignal):
@@ -280,7 +280,7 @@ class BedSignal(IntervalSignal):
         Class for operating on BED files.
         """
         IntervalSignal.__init__(self, fn)
-        self.adapter = filetype_adapters.BedAdapter(fn)
+        self.adapter = metaseq.filetype_adapters.BedAdapter(fn)
 
 
 _registry = {

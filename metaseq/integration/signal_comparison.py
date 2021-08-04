@@ -79,7 +79,7 @@ def compare(signal1, signal2, features, outfn, comparefunc=np.subtract,
             continue
 
         if verbose:
-            print 'working on batch of %s' % batchsize
+            print('working on batch of %s' % batchsize)
             sys.stdout.flush()
 
         arr1 = signal1.array(this_batch, **array_kwargs).astype(float)

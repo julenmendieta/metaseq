@@ -466,7 +466,7 @@ def test_nonbigwig_kwargs():
                 ArgumentError, gs['bigwig'].local_coverage, 'chr2L:1-20',
                 **kwargs)
         except AssertionError:
-            print kwargs
+            print(kwargs)
             raise
 
     assert_raises(ArgumentError, gs['bigwig'].local_coverage, 'chr2L:1-20',
@@ -537,7 +537,7 @@ def test_supported_formats():
     assert_raises(ValueError, metaseq.genomic_signal, "", 'unsupported')
 
 def test_bam_genome():
-    assert gs['bam'].genome() == {'chr2L': (0, 23011544L)}
+    assert gs['bam'].genome() == {'chr2L': (0, 23011544)}
 
 def test_bam_mmr():
     import os
